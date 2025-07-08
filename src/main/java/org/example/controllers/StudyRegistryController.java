@@ -2,6 +2,7 @@ package org.example.controllers;
 
 import org.example.studymaterial.AudioReference;
 import org.example.studymaterial.Reference;
+import org.example.studymaterial.AudioEditData;
 import org.example.studymaterial.TextReference;
 import org.example.studymaterial.VideoReference;
 import org.example.studyregistry.*;
@@ -109,15 +110,32 @@ public class StudyRegistryController {
         studyTaskManager.addRegistry(goal);
     }
 
-    private void editAudio(AudioReference audioReference){
-        handleMethodHeader("(Audio Edit)");
-        System.out.println("Type the following info:  AudioReference. AudioQuality audioQuality, boolean isDownloadable, " +
-                "String title, String description, String link, String accessRights, String license, String language, int rating, " +
-                "int viewCount, int shareCount \n");
-        AudioReference.AudioQuality quality =AudioReference.audioQualityAdapter(getInput());
-        audioReference.editAudio(quality, Boolean.parseBoolean(getInput()), getInput(), getInput(), getInput(), getInput(),
-                getInput(), getInput(), Integer.parseInt(getInput()), Integer.parseInt(getInput()), Integer.parseInt(getInput()));
+    private static class AudioEditor {
+        public static AudioEditData gatherEditData() {
+            System.out.println("Type the following info: AudioQuality, isDownloadable, title, description, link, accessRights, license, language, rating, viewCount, shareCount");
+
+            return new AudioEditData.Builder()
+                    .audioQuality(AudioReference.audioQualityAdapter(getInput()))
+                    .isDownloadable(Boolean.parseBoolean(getInput()))
+                    .title(getInput())
+                    .description(getInput())
+                    .link(getInput())
+                    .accessRights(getInput())
+                    .license(getInput())
+                    .language(getInput())
+                    .rating(Integer.parseInt(getInput()))
+                    .viewCount(Integer.parseInt(getInput()))
+                    .shareCount(Integer.parseInt(getInput()))
+                    .build();
+        }
     }
+
+    private void editAudio(AudioReference audioReference) {
+        handleMethodHeader("(Audio Edit)");
+        AudioEditData editData = AudioEditor.gatherEditData();
+        audioReference.editAudio(editData);
+    }
+
 
     private AudioReference addAudioReference(){
         handleMethodHeader("(Audio Reference Creation)");
