@@ -1,5 +1,10 @@
 package org.example.studysearch;
 
+import org.example.studycards.CardManager;
+import org.example.studyplanner.HabitTracker;
+import org.example.studyplanner.TodoTracker;
+import org.example.studyregistry.StudyTaskManager;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,5 +75,19 @@ public class SearchLog {
         List<String> logInfo = new ArrayList<>();
         logInfo.add("\nLogged in: " + getLogName());
         return logInfo;
+    }
+
+    public List<String> handleRegistrySearch(String text) {
+        List<String> results = new ArrayList<>();
+        results.addAll(CardManager.getCardManager().searchInCards(text));
+        results.addAll(HabitTracker.getHabitTracker().searchInHabits(text));
+        results.addAll(TodoTracker.getInstance().searchInTodos(text));
+        results.addAll(StudyTaskManager.getStudyTaskManager().searchInRegistries(text));
+
+        addSearchHistory(text);
+        setNumUsages(getNumUsages() + 1);
+
+        results.add("\nLogged in: " + getLogName());
+        return results;
     }
 }
