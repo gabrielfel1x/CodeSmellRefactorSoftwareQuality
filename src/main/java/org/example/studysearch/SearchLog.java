@@ -19,18 +19,23 @@ public class SearchLog {
         numUsages = 0;
         isLocked = false;
     }
+
     public void addSearchHistory(String searchHistory) {
         this.searchHistory.add(searchHistory);
     }
+
     public List<String> getSearchHistory() {
         return searchHistory;
     }
+
     public void setSearchHistory(List<String> searchHistory) {
         this.searchHistory = searchHistory;
     }
+
     public Map<String, Integer> getSearchCount() {
         return searchCount;
     }
+
     public void setSearchCount(Map<String, Integer> searchCount) {
         this.searchCount = searchCount;
     }
@@ -57,5 +62,13 @@ public class SearchLog {
 
     public void setLogName(String logName) {
         this.logName = logName;
+    }
+
+    public List<String> logSearch(String text) {
+        addSearchHistory(text);
+        setNumUsages(getNumUsages() + 1);
+        List<String> logInfo = new ArrayList<>();
+        logInfo.add("\nLogged in: " + getLogName());
+        return logInfo;
     }
 }
