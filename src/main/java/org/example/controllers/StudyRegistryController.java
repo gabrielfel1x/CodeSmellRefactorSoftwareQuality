@@ -52,16 +52,33 @@ public class StudyRegistryController {
         studyTaskManager.addRegistry(task);
     }
 
-    private void handleSetObjective(StudyObjective objective){
+    private void handleSetObjective(StudyObjective objective) {
         handleMethodHeader("(Study Objective Edit)");
-        System.out.println("Type the following info: Integer id, Integer priority " +
-                "Integer practicedDays, int day, int month, int year, String name, String title, String description, " +
-                "String topic, String objectiveInOneLine, String objectiveFullDescription, String motivation, " +
-                "Double duration, boolean isActive  \n");
-        objective.handleSetObjective(Integer.parseInt(getInput()), Integer.parseInt(getInput()),Integer.parseInt(getInput()),Integer.parseInt(getInput()),Integer.parseInt(getInput()),
-                Integer.parseInt(getInput()), getInput(), getInput(), getInput(), getInput(), getInput(), getInput(), getInput(),
-                Double.parseDouble(getInput()), Boolean.parseBoolean(getInput()));
+        System.out.println("Type the following info: Integer id, Integer priority, Integer practicedDays, " +
+                "int day, int month, int year, String name, String title, String description, String topic, " +
+                "String objectiveInOneLine, String objectiveFullDescription, String motivation, " +
+                "Double duration, boolean isActive\n");
+
+        ObjectiveParameters params = new ObjectiveParameters();
+        params.id = Integer.parseInt(getInput());
+        params.priority = Integer.parseInt(getInput());
+        params.practicedDays = Integer.parseInt(getInput());
+        params.day = Integer.parseInt(getInput());
+        params.month = Integer.parseInt(getInput());
+        params.year = Integer.parseInt(getInput());
+        params.name = getInput();
+        params.title = getInput();
+        params.description = getInput();
+        params.topic = getInput();
+        params.objectiveInOneLine = getInput();
+        params.objectiveFullDescription = getInput();
+        params.motivation = getInput();
+        params.duration = Double.parseDouble(getInput());
+        params.isActive = Boolean.parseBoolean(getInput());
+
+        objective.handleSetObjective(params);
     }
+
 
     private StudyObjective getStudyObjectiveInfo(){
         handleMethodHeader("(Study Objective Creation)");
