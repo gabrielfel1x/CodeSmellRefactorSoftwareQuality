@@ -29,4 +29,12 @@ public class Card {
         setQuestion(question);
         setAnswer(answer);
     }
+
+    public String format(Integer id) {
+        return "[id: " + id + "] Question: " + this.question + " Answer: " + this.answer;
+    }
+
+    public static boolean isInvalid(String question, String answer) {
+        return question == null || question.isEmpty() || answer == null || answer.isEmpty();
+    }
 }
