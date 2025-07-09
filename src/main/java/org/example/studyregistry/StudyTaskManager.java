@@ -3,7 +3,6 @@ package org.example.studyregistry;
 import org.example.studymaterial.Reference;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class StudyTaskManager {
@@ -12,11 +11,11 @@ public class StudyTaskManager {
     List<Registry> registryList;
     List<String> weekResponsibilities = List.of();
 
-    private StudyTaskManager(){
-        this.registryList = new ArrayList<Registry>();
+    private StudyTaskManager() {
+        this.registryList = new ArrayList<>();
     }
 
-    public static StudyTaskManager getStudyTaskManager(){
+    public static StudyTaskManager getStudyTaskManager() {
         if (instance == null) {
             instance = new StudyTaskManager();
         }
@@ -27,39 +26,52 @@ public class StudyTaskManager {
         return weekResponsibilities;
     }
 
-    public void setUpWeek(String planName, String objectiveTitle, String objectiveDescription, String materialTopic,
-                          String materialFormat, String goal, String reminderTitle, String reminderDescription,
-                          String mainTaskTitle, String mainHabit, String mainCardStudy){
-        this.weekResponsibilities = new ArrayList<>();
-        this.weekResponsibilities.addAll(Arrays.asList(planName, objectiveTitle, objectiveDescription, materialTopic, materialFormat, goal, reminderTitle, reminderDescription, mainTaskTitle, mainHabit, mainCardStudy));
+    // New clean method using WeekSetup object
+    public void setUpWeek(WeekSetup weekSetup) {
+        this.weekResponsibilities = weekSetup.toList();
     }
 
-    public void handleSetUpWeek(List<String> stringProperties){
-        setUpWeek(stringProperties.get(0), stringProperties.get(1), stringProperties.get(2), stringProperties.get(3),
-                stringProperties.get(4), stringProperties.get(5), stringProperties.get(6), stringProperties.get(7),
-                stringProperties.get(8), stringProperties.get(9), stringProperties.get(10));
+    // Method required by your tests — handles List<String> input
+    public void handleSetUpWeek(List<String> stringProperties) {
+        if (stringProperties == null || stringProperties.size() < 11) {
+            throw new IllegalArgumentException("Expected list with at least 11 elements");
+        }
+        WeekSetup weekSetup = new WeekSetup.Builder()
+                .planName(stringProperties.get(0))
+                .objectiveTitle(stringProperties.get(1))
+                .objectiveDescription(stringProperties.get(2))
+                .materialTopic(stringProperties.get(3))
+                .materialFormat(stringProperties.get(4))
+                .goal(stringProperties.get(5))
+                .reminderTitle(stringProperties.get(6))
+                .reminderDescription(stringProperties.get(7))
+                .mainTaskTitle(stringProperties.get(8))
+                .mainHabit(stringProperties.get(9))
+                .mainCardStudy(stringProperties.get(10))
+                .build();
+        setUpWeek(weekSetup);
     }
 
-
-    public void addRegistry(Registry registry){
+    public void addRegistry(Registry registry) {
         registryList.add(registry);
     }
-    public void removeRegistry(Registry registry){
+
+    public void removeRegistry(Registry registry) {
         registryList.remove(registry);
     }
-    public List<Registry> getRegistryList(){
+
+    public List<Registry> getRegistryList() {
         return registryList;
     }
 
-    public List<String> searchInRegistries(String text){
+    public List<String> searchInRegistries(String text) {
         List<String> response = new ArrayList<>();
-        for(Registry registry : registryList){
+        for (Registry registry : registryList) {
             String mix = (registry.getName() != null ? registry.getName() : "");
-            if (mix.toLowerCase().contains(text.toLowerCase())){
+            if (mix.toLowerCase().contains(text.toLowerCase())) {
                 response.add(registry.getName());
             }
         }
         return response;
     }
-
 }
